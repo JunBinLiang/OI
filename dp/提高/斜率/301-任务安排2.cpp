@@ -68,7 +68,7 @@ int main() {
         int j = q[hh];
         dp[i] = dp[j] + s * (C[n] - C[j]) + T[i] * (C[i] - C[j]);
         
-        while(tt - hh > 1 && up(q[tt-1], i) * down(q[tt-2], q[tt-1]) <= up(q[tt-2], q[tt-1])* down(q[tt-1], i)) {
+        while(tt - hh > 1 && up(q[tt-1], i) * down(q[tt-2], q[tt-1]) <= up(q[tt-2], q[tt-1]) * down(q[tt-1], i)) {
             tt--;
         }
         q[tt++] = i;
