@@ -1,4 +1,8 @@
 //https://www.bilibili.com/video/BV1zd4y1T7fX?spm_id_from=333.999.0.0&vd_source=07747202ca6f0fb45ca42a153cb71960
+
+//C(n, i) * C(i, j) = C(n - j, i - j)
+//n 个球选 i 个，再从其中选j个
+
 #include <bits/stdc++.h>
 using namespace std;
 typedef long long ll;
