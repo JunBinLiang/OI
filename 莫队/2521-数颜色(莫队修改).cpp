@@ -44,7 +44,10 @@ void del(int x, int& res)
     cnt[x] -- ;
     if (!cnt[x]) res -- ;
 }
-
+//block length : a
+//l : am + 2n
+//r: am + n^2/a
+//t: (n^2 / a^2) t
 int main()
 {
     scanf("%d%d", &n, &m);
