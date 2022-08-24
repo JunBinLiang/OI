@@ -43,7 +43,6 @@ struct Node {
 
 void add(int x, int v, int value, int idx) {
   int root = 0;
-  ve<ve<int>> path;
   for(int i = 30; i >= 0; i--) {
     int b = 0;
     if(x & (1 << i)) b = 1;
