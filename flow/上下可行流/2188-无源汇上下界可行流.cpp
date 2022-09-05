@@ -87,7 +87,7 @@ int main()
     {
         puts("YES");
         for (int i = 0; i < m * 2; i += 2)
-            printf("%d\n", f[i ^ 1] + l[i]);
+            printf("%d\n", f[i ^ 1] + l[i]); //f[i] 存的是容量，流量是反向边的容量
     }
     return 0;
 }
