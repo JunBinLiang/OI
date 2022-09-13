@@ -83,6 +83,8 @@ PLL calc(int r)
         p[a] = b;
         sz[b] += sz[a];
         cnt += get(sz[b]);
+        //维护最大值，次大值
+        //维护最小值，次小值
         if (max1[a] >= max1[b])
         {
             max2[b] = max(max1[b], max2[a]);
