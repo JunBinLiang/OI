@@ -80,6 +80,7 @@ PLL calc(int r)
     {
         int a = find(x - 1), b = find(x);
         cnt -= (get(sz[a]) + get(sz[b]));
+        if(a == b) continue;
         p[a] = b;
         sz[b] += sz[a];
         cnt += get(sz[b]);
