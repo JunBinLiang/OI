@@ -27,7 +27,7 @@ void dfs(int u, int last, int p, int s)
         dfs(u + 1, i, p, s * (i + 1));
     }
 }
-
+//求最小拥有最多约数个数的数
 int main()
 {
     cin >> n;
