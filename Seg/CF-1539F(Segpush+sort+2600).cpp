@@ -137,8 +137,6 @@ bool COMP(pair<int, int>& p1, pair<int, int>& p2) {
 }
 
 
-//(large + equal - samll) / 2
-//(small + equal - large + 1) / 2 
 void solve() {
     int n;
     scanf("%d", &n);
