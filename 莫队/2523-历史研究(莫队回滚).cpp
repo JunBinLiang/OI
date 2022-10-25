@@ -36,7 +36,7 @@ void add(int x, LL& res)
     cnt[x] ++ ;
     res = max(res, (LL)cnt[x] * nums[x]);
 }
-
+//nlogn
 int main()
 {
     scanf("%d%d", &n, &m);
