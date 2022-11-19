@@ -25,107 +25,7 @@ using ll = long long;
 #define be begin
 #define en end
 
-// Some predefined templates
-template <typename T>
-ostream &operator<<(ostream &out, const vector<T> &a)
-{
-  out << "[";
-  bool first = true;
-  for (auto v : a)
-  {
-    out << (first ? "" : ", ");
-    out << v;
-    first = 0;
-  }
-  out << "]";
-  return out;
-}
 
-template <typename T>
-ostream &operator<<(ostream &out, const unordered_set<T> &a)
-{
-  out << "[";
-  bool first = true;
-  for (auto v : a)
-  {
-    out << (first ? "" : ", ");
-    out << v;
-    first = 0;
-  }
-  out << "]";
-  return out;
-}
-
-template <typename T>
-ostream &operator<<(ostream &out, const set<T> &a)
-{
-  out << "[";
-  bool first = true;
-  for (auto v : a)
-  {
-    out << (first ? "" : ", ");
-    out << v;
-    first = 0;
-  }
-  out << "]";
-  return out;
-}
-
-template <typename U, typename T, class Cmp>
-ostream &operator<<(ostream &out, const map<U, T, Cmp> &a)
-{
-  out << "{";
-  bool first = true;
-  for (auto &p : a)
-  {
-    out << (first ? "" : ", ");
-    out << p.first << ":" << p.second;
-    first = 0;
-  }
-  out << "}";
-  return out;
-}
-
-template <typename U, typename T, class Cmp>
-ostream &operator<<(ostream &out, const unordered_map<U, T, Cmp> &a)
-{
-  out << "{";
-  bool first = true;
-  for (auto &p : a)
-  {
-    out << (first ? "" : ", ");
-    out << p.first << ":" << p.second;
-    first = 0;
-  }
-  out << "}";
-  return out;
-}
-
-
-ll gcd(ll x, ll y)
-{
-  return (y == 0 ? x : gcd(y, x % y));
-}
-ll lcm(ll x, ll y)
-{
-  return x * y / gcd(x, y);
-}
-
-int to_int(string &s)
-{
-  int res = 0;
-  for (char c : s)
-  {
-    res = res * 10 + (c - '0');
-  }
-  return res;
-}
-
-string substring(string& s, int l, int r) {
-  string res = "";
-  for(int i = l; i <= r; i++) res += s[i];
-  return res;
-}
 
 /*class Compare
 {
@@ -137,14 +37,6 @@ public:
     //a[0] > b[0] : min
 };*/
 
-
-struct Tuple {
-  int l, r, idx;
-};
-
-bool COMP(pair<int, int>& p1, pair<int, int>& p2) {
-  return p1.second < p2.second;
-}
 
 
 int n, m;
@@ -160,26 +52,6 @@ int idx = 0;
 int scc = 0;
 int cnt = 0;
 
-/*void tarjan(int u) {
-  dfn[u] = low[u] = t++;
-  sta[++idx] = u, is[u] = true;
-  for(int& nxt : graph[u]) {
-    if(!dfn[nxt]) {
-      tarjan(nxt);
-      low[u] = min(low[u], low[nxt]);
-    } else if(is[nxt]) {
-      low[u] = min(low[u], dfn[nxt]);
-    }
-  }
-  
-  if (low[u] == dfn[u]) {
-    int y;
-    scc ++ ;
-    do {
-      y = sta[idx -- ], is[y] = false, id[y] = scc;
-    } while (y != u);
-  }
-}*/
 
 void tarjan(int u) {
   dfn[u] = low[u] = t++;
