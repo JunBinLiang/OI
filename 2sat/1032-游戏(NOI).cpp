@@ -17,7 +17,8 @@ using namespace std;
 using ll = long long;
 #define pb push_back
 
-const int N = 2000000 + 10 , M = 2000000;
+const int N = 100000 + 10;
+const int M = 200000 + 10;
 int h[N], e[M], ne[M];
 int dfn[N], low[N], id[N];
 bool is[N];
@@ -26,7 +27,7 @@ int sta[N];
 int t = 1;
 int idx = 0;
 int scc = 0;
-
+int top = 0;
 int n, d, m;
 vector<int> pos;
 
@@ -37,7 +38,7 @@ struct op {
 
 void tarjan(int u) {
   dfn[u] = low[u] = t++;
-  sta[++idx] = u, is[u] = true;
+  sta[++top] = u, is[u] = true;
   for(int i = h[u]; ~i; i = ne[i]) {
     int nxt = e[i];
     if(!dfn[nxt]) {
@@ -52,7 +53,7 @@ void tarjan(int u) {
     int y;
     scc ++ ;
     do {
-      y = sta[idx -- ], is[y] = false, id[y] = scc;
+      y = sta[top -- ], is[y] = false, id[y] = scc;
     } while (y != u);
   }
 }
@@ -71,7 +72,8 @@ bool work(string& s) {
     memset(dfn, 0, sizeof dfn);
     memset(id, 0, sizeof id);
     t = 1;
-    idx = scc = 0;
+    idx = 0;
+    scc = 0;
     for(int i = 0; i < m; i++) {
         int idx1 = a[i].h1 - 1, idx2 = a[i].h2 - 1;
         int h1 = idx1, h2 = idx2;
