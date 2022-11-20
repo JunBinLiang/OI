@@ -11,37 +11,13 @@
 #include <queue>
 #include <list>
 
-using namespace std;
+
+using namespace std;  
+
 using ll = long long;
 #define pb push_back
-#define ve vector
-#define FOR(i, a, b) for (int i = a; i < b; ++i)
-#define RFOR(i, a, b) for (int i = a; i >= b; i--)
-#define f first
-#define se second
-#define W while
-#define um unordered_map
-#define us unordered_set
-#define be begin
-#define en end
 
-
-
-/*class Compare
-{
-public:
-    bool operator() (pair<int, int>& a, pair<int, int>& b)
-    {
-        return a.first > b.first;
-    }
-    //a[0] > b[0] : min
-};*/
-
-
-
-int n, m;
-const int N = 2000010;
-const int M = 2000010;
+const int N = 2e3 + 10 , M = 4e6 + 10;
 int h[N], e[M], ne[M];
 int dfn[N], low[N], id[N];
 bool is[N];
@@ -50,7 +26,6 @@ int sta[N];
 int t = 1;
 int idx = 0;
 int scc = 0;
-int cnt = 0;
 int top = 0;
 
 void tarjan(int u) {
@@ -80,49 +55,89 @@ void add(int a, int b)
     e[idx] = b, ne[idx] = h[a], h[a] = idx ++ ;
 }
 
-void solve() {
-  scanf("%d%d", &n, &m);
-  memset(h, -1, sizeof(h));
-  while (m -- ) {
-    int i, a, j, b;
-    scanf("%d%d%d%d", &i, &a, &j, &b);
-    i--, j--;
-    add(2 * i + a ^ 1, 2 * j + b);
-    add(2 * j + b ^ 1, 2 * i + a);
-  }
-
-  idx = 0;
-  for(int i = 0; i < 2 * n; i++) {
-    if(!dfn[i]) {
-      tarjan(i); 
+bool over(pair<int, int>& p1, pair<int, int>& p2) {
+    if(p1.first > p2.first) {
+        return over(p2, p1);
     }
-  }
-  
-  for(int i = 0; i < n; i++) {
-    if(id[i * 2] == id[i * 2 + 1]) {
-      printf("IMPOSSIBLE \n");
-      return;
-    }
-  }
-
-  printf("POSSIBLE \n");
-  for(int i = 0; i < n; i++) { //tarjan is reverse as Topo
-    if(id[i * 2] < id[i * 2 + 1]) {
-      printf("0 ");
-    } else {
-      printf("1 ");
-    }
-  }
+    return p2.first < p1.second;
 }
 
-int main()
-{
+int to(string& s) {
+    int h = (s[0] - '0') * 10 + (s[1] - '0');
+    int m = (s[3] - '0') * 10 + (s[4] - '0');
+    return h * 60 + m;
+}
 
-  int t = 1;
-  //cin >> t;
-  W (t--)
-  { 
-    solve();
-  }
-  return 0;
+string format(int t) {
+    int h = t / 60;
+    int m = t % 60;
+    string res = "";
+    if(h < 10) {
+        res += "0";
+        res += to_string(h);
+    } else {
+        res += to_string(h);
+    }
+    res += ":";
+    if(m < 10) {
+        res += "0";
+        res += to_string(m);
+    } else {
+        res += to_string(m);
+    }
+    return res;
+}
+
+pair<int, int> a[N * 2];
+int main() {
+    int n;
+    scanf("%d", &n);
+    memset(h, -1, sizeof h);
+    for(int i = 0; i < n; i++) {
+        int d;
+        string s, t;
+        cin >> s >> t >> d;
+        a[i] = {to(s), to(s) + d};
+        a[i + n] = {to(t) - d, to(t)};
+    }
+    
+    for(int i = 0; i < n; i++) {
+        for(int j = i - 1; j >= 0; j--) {
+            if(over(a[i], a[j])) add(i, j + n), add(j, i + n);
+            if(over(a[i], a[j + n])) add(i, j), add(j + n, i + n);
+            if(over(a[i + n], a[j]))  add(i + n, j + n), add(j, i);
+            if(over(a[i + n], a[j + n])) add(i + n, j), add(j + n, i);
+        }
+    }
+    
+    idx = 0;
+    for(int i = 0; i < 2 * n; i++) {
+        if(!dfn[i]) {
+            tarjan(i); 
+        }
+    }
+    
+    for(int i = 0; i < n; i++) {
+        if(id[i] == id[i + n]) {
+          printf("NO \n");
+          return 0;
+        }
+    }
+    
+    printf("YES\n");
+    for(int i = 0; i < n; i++) {
+        if(id[i] < id[i + n]) {
+            pair<int, int> p1 = a[i];
+            string s1 = format(p1.first);
+            string s2 = format(p1.second);
+            cout << s1 << " " << s2 << endl;
+        } else {
+            pair<int, int> p1 = a[i + n];
+            string s1 = format(p1.first);
+            string s2 = format(p1.second);
+            cout << s1 << " " << s2 << endl;
+        }
+    }
+    
+    return 0;
 }
