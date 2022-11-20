@@ -51,11 +51,11 @@ int t = 1;
 int idx = 0;
 int scc = 0;
 int cnt = 0;
-
+int top = 0;
 
 void tarjan(int u) {
   dfn[u] = low[u] = t++;
-  sta[++idx] = u, is[u] = true;
+  sta[++top] = u, is[u] = true;
   for(int i = h[u]; ~i; i = ne[i]) {
     int nxt = e[i];
     if(!dfn[nxt]) {
@@ -70,7 +70,7 @@ void tarjan(int u) {
     int y;
     scc ++ ;
     do {
-      y = sta[idx -- ], is[y] = false, id[y] = scc;
+      y = sta[top -- ], is[y] = false, id[y] = scc;
     } while (y != u);
   }
 }
@@ -87,8 +87,8 @@ void solve() {
     int i, a, j, b;
     scanf("%d%d%d%d", &i, &a, &j, &b);
     i--, j--;
-    add(2 * i + !a, 2 * j + b);
-    add(2 * j + !b, 2 * i + a);
+    add(2 * i + a ^ 1, 2 * j + b);
+    add(2 * j + b ^ 1, 2 * i + a);
   }
 
   idx = 0;
