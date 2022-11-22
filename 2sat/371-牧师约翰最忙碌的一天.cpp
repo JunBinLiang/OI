@@ -26,10 +26,11 @@ int sta[N];
 int t = 1;
 int idx = 0;
 int scc = 0;
+int top = 1;
 
 void tarjan(int u) {
   dfn[u] = low[u] = t++;
-  sta[++idx] = u, is[u] = true;
+  sta[++top] = u, is[u] = true;
   for(int i = h[u]; ~i; i = ne[i]) {
     int nxt = e[i];
     if(!dfn[nxt]) {
@@ -44,7 +45,7 @@ void tarjan(int u) {
     int y;
     scc ++ ;
     do {
-      y = sta[idx -- ], is[y] = false, id[y] = scc;
+      y = sta[top -- ], is[y] = false, id[y] = scc;
     } while (y != u);
   }
 }
