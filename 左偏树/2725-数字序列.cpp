@@ -50,7 +50,7 @@ int main() {
         while(tt != 0 && a[cur.root] < a[stk[tt].root]) {
             cur.root = merge(cur.root, stk[tt].root);
             if (cur.size % 2 && stk[tt].size % 2)
-                cur.root = pop(cur.root);
+                cur.root = pop(cur.root); //需要弹出
             cur.size += stk[tt].size;
             tt--;
         }
