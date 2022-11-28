@@ -1,4 +1,5 @@
 //删除不需要哨兵
+//启发式添加
 
 #include <cstdio>
 #include <cstring>
