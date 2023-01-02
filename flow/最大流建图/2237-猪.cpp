@@ -64,9 +64,6 @@ int dinic()
     while (bfs())
     {
         r += find(S, INF);
-        flow = find(S, INF);
-        if (flow) puts("!");
-        r += flow;
     }
     return r;
 }
