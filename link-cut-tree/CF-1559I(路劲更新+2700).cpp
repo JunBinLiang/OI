@@ -177,7 +177,7 @@ void solve() {
         int u = e[i].u, v = e[i].v;
     
         while(con(u, v)) {
-            //split(u, v);
+            split(u, v);
             splay(v);
             if(tr[v].sum == 0) {
                 break;
