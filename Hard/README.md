@@ -1,1 +1,1 @@
-Difficulty over 2700
+Difficulty over 2400
