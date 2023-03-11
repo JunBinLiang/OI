@@ -20,6 +20,7 @@ int n, m, S, T;
 
 int h[N], e[M], w[M], ne[M], idx;
 int dist1[N], dist2[N];
+int q[N];
 bool st[N];
 
 struct Edge {
@@ -31,60 +32,69 @@ void add(int a, int b)
     e[idx] = b, ne[idx] = h[a], h[a] = idx ++ ;
 }
 
-void dijkstra1()  // 求1号点到n号点的最短路距离
+void spfa1()  // 求1号点到n号点的最短路距离
 {
-    for(int i = 0; i < N; i++) dist1[i] = INF;
     
+    for(int i = 0; i < N; i++) dist1[i] = INF;
+    memset(st, 0, sizeof st);
+    
+    int hh = 0, tt = 1;
+    q[0] = S, st[S] = true;
     dist1[S] = a[S];
-    priority_queue<PII, vector<PII>, greater<PII>> heap;
-    heap.push({a[S], S});
 
-    while (heap.size())
+    while (hh != tt)
     {
-        auto t = heap.top();
-        heap.pop();
+      int root = q[hh ++];
+      if(hh == N) hh = 0;
+      st[root] = false;
 
-        int ver = t.second, distance = t.first;
-
-        if (distance != dist1[ver]) continue;
-
-        for (int i = h[ver]; i != -1; i = ne[i])
-        {
-            int j = e[i];
-            if (dist1[j] > min(dist1[ver], a[j]))
+      for (int i = h[root]; ~i; i = ne[i])
+      {
+          int j = e[i];
+          if (dist1[j] > min(dist1[root], a[j]))
+          {
+            dist1[j] =  min(dist1[root], a[j]);
+            if (!st[j])
             {
-                dist1[j] = min(dist1[ver], a[j]);
-                heap.push({dist1[j], j});
+              q[tt ++ ] = j;
+              if (tt == N) tt = 0;
+              st[j] = true;
             }
-        }
+          }
+      }
     }
 }
 
-void dijkstra2() //反方向最大值
+void spfa2() //反方向最大值
 {
     memset(dist2, 0, sizeof dist2);
     dist2[T] = a[T];
-    priority_queue<PII> heap;
-    heap.push({a[T], T});
+    memset(st, 0, sizeof st);
     
-    while (heap.size())
+    int hh = 0, tt = 1;
+    q[0] = T, st[T] = true;
+    dist2[T] = a[T];
+
+    while (hh != tt)
     {
-        auto t = heap.top();
-        heap.pop();
+      int root = q[hh ++];
+      if(hh == N) hh = 0;
+      st[root] = false;
 
-        int ver = t.second, distance = t.first;
-
-        if (distance != dist2[ver]) continue;
-
-        for (int i = h[ver]; i != -1; i = ne[i])
-        {
-            int j = e[i];
-            if (dist2[j] < max(dist2[ver], a[j]))
+      for (int i = h[root]; ~i; i = ne[i])
+      {
+          int j = e[i];
+          if (dist2[j] < max(dist2[root], a[j]))
+          {
+            dist2[j] =  max(dist2[root], a[j]);
+            if (!st[j])
             {
-                dist2[j] = max(dist2[ver], a[j]);
-                heap.push({dist2[j], j});
+              q[tt ++ ] = j;
+              if (tt == N) tt = 0;
+              st[j] = true;
             }
-        }
+          }
+      }
     }
 }
 
@@ -98,6 +108,7 @@ void solve() {
     
     S = 1; T = n;
     memset(h, -1, sizeof h);
+    memset(st, false, sizeof st);
     
     for(int i = 0; i < m; i++) {
         int a, b, c;
@@ -107,7 +118,7 @@ void solve() {
         if(c == 2) add(b, a);
     }
     
-    dijkstra1();
+    spfa1();
     
     memset(h, -1, sizeof h);
     idx = 0;
@@ -117,7 +128,7 @@ void solve() {
         if(c == 2) add(a, b);
     }
     
-    dijkstra2();
+    spfa2();
     
     
     int res = 0;
