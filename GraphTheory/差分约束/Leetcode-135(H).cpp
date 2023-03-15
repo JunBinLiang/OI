@@ -49,21 +49,19 @@ public:
         for(int i = 1; i < a.size(); i++) {
             if(a[i] > a[i - 1]) {
                 add(i, i + 1, 1);
-            } else {
-                if(a[i] < a[i - 1]) {
-                    add(i + 1, i, 1);
-                }
+            } else if(a[i] < a[i - 1]) {
+                add(i + 1, i, 1);
             }
         }
         
-        for(int i = 1; i <= a.size(); i++) {
+        for(int i = 1; i <= n; i++) {
             add(0, i, 1);
         }
         
         spfa();
         
         int res = 0;
-        for(int i = 0; i <= a.size(); i++) {
+        for(int i = 0; i <= n; i++) {
             res += dist[i];
         }
         
