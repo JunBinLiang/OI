@@ -18,7 +18,7 @@ typedef pair<double, double> PDD;
 const int N = 250, M = 1e5 + 10;
 const int INF = 1e9;
 int n, m;
-int d[N][N];
+ll d[N][N];
 int col[N];
 bool bi = true;
 vector<int> g[N];
@@ -78,11 +78,13 @@ void solve() {
         }
     }
     
-    if(d[1][1] < 0) { //neg cycle
-        cout << "NO" << endl;
-        return;
+    for(int i = 1; i <= n; i++) {
+        if(d[i][i] < 0) { //neg cycle
+            cout << "NO" << endl;
+            return;
+        }
     }
-    
+
     int mx = 0, idx = 1;
     for(int i = 1; i <= n; i++) {
         for(int j = 1; j <= n; j++) {
