@@ -22,7 +22,8 @@ void build(int c)
 {
     memset(h, -1, sizeof h);
     idx = 0;
-    add(0, 24, c), add(24, 0, -c);
+    add(0, 24, c), add(24, 0, -c);//固定这的值
+        
     for (int i = 1; i <= 7; i ++ ) add(i + 16, i, r[i] - c);
     for (int i = 8; i <= 24; i ++ ) add(i - 8, i, r[i]);
     for (int i = 1; i <= 24; i ++ )
