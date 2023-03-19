@@ -29,11 +29,14 @@ void tarjan(int u)
         {
             tarjan(j);
             low[u] = min(low[u], low[j]);
-            if (low[j] >= dfn[u]) cnt ++ ; //割点,使下面不连通
+            if (low[j] >= dfn[u]) {
+                cnt ++ ; //割点,使下面不连通
+            }
         }
         else low[u] = min(low[u], dfn[j]);
     }
-
+    
+    //就算这一个点不是割点，那么去掉它之后整体也算是一个连通块
     if (u != root) cnt ++ ;
 
     ans = max(ans, cnt);
