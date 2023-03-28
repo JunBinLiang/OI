@@ -66,6 +66,7 @@ void solve() {
         for(int d = 1; d <= min(a, b); d++) {
             res += (c / z * mu[d] + 0ll) * get(z, d, a) * get(z, d, b);
             res %= mod;
+            if(res < 0) res += mod;
         }
     }
 
