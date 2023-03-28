@@ -1,0 +1,82 @@
+#include <string>
+#include <map>
+#include <unordered_map>
+#include <set>
+#include <unordered_set>
+#include <algorithm>
+#include <cmath>
+#include <cstring>
+#include <queue>
+#include <list>
+#include <iostream>
+   
+using namespace std;  
+using ll = long long;
+#define pb push_back
+#define ve vector
+
+const int N = 2020, mod = 1073741824;
+int primes[N], cnt, mu[N];
+bool st[N];
+int f[N][N];
+
+int g(int k, int x)
+{
+    return k / (k / x);
+}
+
+void init()
+{
+    mu[1] = 1;
+    for (int i = 2; i < N; i ++ )
+    {
+        if (!st[i]) primes[cnt ++ ] = i, mu[i] = -1;
+        for (int j = 0; primes[j] * i < N; j ++ )
+        {
+            st[primes[j] * i] = true;
+            if (i % primes[j] == 0) break;
+            mu[i * primes[j]] = -mu[i];
+        }
+    }
+    
+    for(int i = 1; i < N; i++) {
+        for(int j = 1; j < N; j++) {
+            f[i][j] = __gcd(i, j);
+        }
+    }
+}
+
+int get(int z, int d, int a) {
+    int res = 0;
+    for(int i = 1; i * d <= a; i++) {
+        if(f[z][i * d] == 1) {
+            res += a / (i * d);
+        }
+    }
+    return res;
+}
+
+//https://blog.csdn.net/hzk_cpp/article/details/87198817?spm=1001.2101.3001.6650.10&utm_medium=distribute.pc_relevant.none-task-blog-2%7Edefault%7EESLANDING%7Edefault-10-87198817-blog-102840401.235%5Ev27%5Epc_relevant_landingrelevant&depth_1-utm_source=distribute.pc_relevant.none-task-blog-2%7Edefault%7EESLANDING%7Edefault-10-87198817-blog-102840401.235%5Ev27%5Epc_relevant_landingrelevant&utm_relevant_index=11
+void solve() {
+    init();
+    int a, b, c;
+    cin >> a >> b >> c;    
+    ll res = 0;
+    for(int z = 1; z <= c; z++) {
+        for(int d = 1; d <= min(a, b); d++) {
+            res += (c / z * mu[d] + 0ll) * get(z, d, a) * get(z, d, b);
+            res %= mod;
+        }
+    }
+
+    cout << res << endl;
+}
+
+int main() {
+    int t = 1;
+    //cin >> t;
+    while(t--) {
+        solve();
+    }
+    return 0;
+}
