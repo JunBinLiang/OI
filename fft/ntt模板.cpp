@@ -46,7 +46,6 @@ namespace NTT {
         }
         
         DFT(c, -1, tot);
-        int inv = qpow(tot, mod - 2);
         for(int i = 0; i <= n + m; i++) {
             printf("%d ", c[i]);
         }
