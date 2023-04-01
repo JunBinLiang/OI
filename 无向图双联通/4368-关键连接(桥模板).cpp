@@ -1,3 +1,5 @@
+#include <iostream>
+#include <vector>
 #include <string>
 #include <map>
 #include <unordered_map>
@@ -8,7 +10,6 @@
 #include <cstring>
 #include <queue>
 #include <list>
-#include <iostream>
    
 using namespace std;  
 
@@ -25,15 +26,17 @@ using ll = long long;
 #define be begin
 #define en end
 
-int n;
-const int N = 1e5 + 10, M = N * 2;
-int e[M], ne[M], h[N], idx;
+const int N = 5010, M = 20010;
+
+int n, m;
+int h[N], e[M], ne[M], idx;
 int dfn[N], low[N], timestamp;
+int stk[N], top;
+int id[N], dcc_cnt;
 bool is_bridge[M];
+int d[N];
 
-vector<pair<int, int>> ans;
-
-void add(int a, int b)  // 添加一条边a->b
+void add(int a, int b)
 {
     e[idx] = b, ne[idx] = h[a], h[a] = idx ++ ;
 }
@@ -41,24 +44,25 @@ void add(int a, int b)  // 添加一条边a->b
 void tarjan(int u, int from)
 {
     dfn[u] = low[u] = ++ timestamp;
+    stk[ ++ top] = u;
+
     for (int i = h[u]; ~i; i = ne[i])
     {
         int j = e[i];
         if (!dfn[j])
         {
-            
-            tarjan(j, u);
+            tarjan(j, i);
             low[u] = min(low[u], low[j]);
             if (dfn[u] < low[j]) {
-                ans.push_back({min(u, j), max(u, j)});
+                is_bridge[i] = is_bridge[i ^ 1] = true;
             }    
         }
-        else if (j != from) { //非反向边
+        else if (i != (from ^ 1)) { //非反向边
             low[u] = min(low[u], dfn[j]);
         }
     }
 
-    /*if (dfn[u] == low[u])
+    if (dfn[u] == low[u])
     {
         ++ dcc_cnt;
         int y;
@@ -66,54 +70,39 @@ void tarjan(int u, int from)
             y = stk[top -- ];
             id[y] = dcc_cnt;
         } while (y != u);
-    }*/
+    }
 }
 
-
-void solve() {
-    
-    idx = 0;
-    timestamp = 0;
-    memset(h, -1, sizeof h);
-    memset(dfn, 0, sizeof dfn);
-    memset(low, 0, sizeof low);
-    ans.clear();
-    
-    
-    //cout << n << endl;
-    
-    for(int i = 0; i < n; i++) {
-        int u;
-        scanf("%d", &u);
-        string s;
-        cin >> s;
-        int k = 0;
-        for(int j = 1; j < s.size() - 1; j++) {
-            k = k * 10 + s[j] - '0';
-        }
-        
-        for(int j = 0; j < k; j++) {
-            int v;
-            scanf("%d", &v);
-            add(u, v);
-        }
-    }
-    
-    for(int i = 0; i < n; i++) {
-        if(!dfn[i]) tarjan(i, -1);
-    }
-    
-    sort(ans.begin(), ans.end());
-    cout << ans.size() << " critical links" << endl;
-    for(auto& p : ans) {
-        cout << p.first << " - " << p.second << endl;
-    }
-    cout << endl;
-}
 
 int main() {
-    while(cin >> n) {
-        solve();    
+    cin >> n >> m;
+    memset(h, -1, sizeof h);
+    while (m -- )
+    {
+        int a, b;
+        cin >> a >> b;
+        add(a, b), add(b, a);
     }
+    
+    tarjan(1, -1);
+    
+    for (int i = 0; i < idx; i ++ ) {
+        if (is_bridge[i]) {
+             d[id[e[i]]] ++ ;
+        }
+    }
+
+           
+    
+    int cnt = 0;
+    for (int i = 1; i <= dcc_cnt; i ++ ) {
+        if (d[i] == 1) {
+            cnt ++ ;
+        }
+    }
+        
+
+    printf("%d\n", (cnt + 1) / 2);
+    
     return 0;
 }
