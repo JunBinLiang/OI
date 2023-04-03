@@ -37,7 +37,7 @@ int dfs(int i, int sum) {
 
     return dp[i][sum] = res;
 }
-//1:50
+//1:50 - 2:05
 void solve() {
     cin >> n >> k >> mod;
     ll tot = 1;
