@@ -13,18 +13,6 @@
 
 using namespace std;
 using ll = long long;
-#define pb push_back
-#define ve vector
-#define FOR(i, a, b) for (int i = a; i < b; ++i)
-#define RFOR(i, a, b) for (int i = a; i >= b; i--)
-#define f first
-#define se second
-#define W while
-#define um unordered_map
-#define us unordered_set
-#define be begin
-#define en end
-
 
 const int N = 20000, M = N * 3;
 int h1[N], h2[N], e[M], w[M], ne[M], idx;
@@ -149,7 +137,7 @@ void solve() {
   dfs_lca(1, 0);
   init();
 
-  W(q--) {
+  while(q--) {
     int a, b;
     scanf("%d%d", &a, &b);
     int p = LCA(a, b);
