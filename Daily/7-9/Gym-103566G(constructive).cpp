@@ -54,7 +54,6 @@ void solve() {
       res.push_back({j, i, j});
       for(int k = i; k < j; k++) t[k] = '1';
       t[j] = '0';
-      //cout << j << " " << i << " " << j << " " << t << endl;
     } else {
       res.push_back({i - 1, i - 1, j - 1});
       for(int k = i - 1; k < j - 1; k++) {
@@ -64,7 +63,6 @@ void solve() {
       for(int k = i - 1; k < j - 1; k++) {
         res.push_back({k + 1, k, k + 1});
       }
-      //cout << i - 1 << " " << i - 1 << " " << j - 1 << " " << t << endl;
     }
     i = j - 1;
   }
@@ -73,6 +71,7 @@ void solve() {
   for(int i = 0; i < n; i++) {
       if(t[i] == '0') p1 = i;
   }
+  
   for(int i = 0; i < n; i++) {
       if(s[i] == '0') p2 = i;
   }
@@ -87,8 +86,13 @@ void solve() {
           res.push_back({i, i, i + 1});
           swap(t[i], t[i + 1]);
       }
+  } else if(p1 < p2 && p1 != -1) {
+      for(int i = p1; i < p2; i++) {
+          res.push_back({i + 1, i, i + 1});
+          swap(t[i], t[i + 1]);
+      }
   }
-  
+
   //final
   for(int i = 0; i < n; i++) {
     if(s[i] != t[i]) {
