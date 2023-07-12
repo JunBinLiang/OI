@@ -37,7 +37,7 @@ char s[N];
 //sa[i] : 排名第i 是第几个后缀
 //rank[i] : 第i个后缀排名第几
 void Sa() {
-  //
+  //类似第一关键字排序，用前缀和看有多少个小于
   for (int i = 1; i <= n; i ++ ) c[x[i] = s[i]] ++ ;
   for (int i = 2; i <= m; i ++ ) c[i] += c[i - 1];
   for (int i = n; i; i -- ) sa[c[x[i]] -- ] = i;
