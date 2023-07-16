@@ -33,7 +33,14 @@ int tr[N * S][26];
 char str[M];
 int n, idx;
 
-
+void clear(int u) {
+    for(int i = 0; i <= idx; i++) {
+        is[i] = false;
+        ne[i] = 0;
+        for(int j = 0; j < 26; j++) tr[i][j] = 0;
+    }
+    idx = 0;
+}
 
 void insert()  // 将str插入Trie中
 {
