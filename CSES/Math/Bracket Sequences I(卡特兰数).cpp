@@ -1,3 +1,6 @@
+//https://codeforces.com/blog/entry/87585
+
+
 #include <iostream>
 #include <cstring>
 #include <algorithm>
