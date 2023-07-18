@@ -1,62 +1,51 @@
 #include <iostream>
+#include <cstring>
+#include <algorithm>
+#include <cmath>
 #include <vector>
-#include <string>
+#include <set>
 #include <map>
 #include <unordered_map>
 #include <set>
 #include <unordered_set>
-#include <algorithm>
-#include <cmath>
-#include <cstring>
 #include <queue>
-#include <list>
-
-   
-using namespace std;  
-
+#include <deque>
+#include <fstream>
+ 
 using ll = long long;
+using ull = unsigned long long;
 #define pb push_back
-#define ve vector
+#define vec vector
+#define var auto
 #define FOR(i, a, b) for (int i = a; i < b; ++i)
-#define RFOR(i, a, b) for (int i = a; i >= b; i--)
-#define f first
-#define se second
-#define W while
-#define um unordered_map
-#define us unordered_set
-#define be begin
-#define en end
+using namespace std;
+ 
+/*
+下凸包最小
+向左移动 i -> j + 1
+S[i - 1] + a[i] = S[i]
+ans[i] = (S[i - 1] - S[j]) - a[i] * i + a[i] * (j + 1) 
+ans[i] = (S[i - 1] - S[j]) - a[i] * i + a[i] * j + a[i]
 
-template <typename T>
-ostream& operator <<(ostream& out, const vector<T>& a) {
-  out << "["; bool first = true;
-  for (auto v : a) { out << (first ? "" : ", "); out << v; first = 0;} 
-  out << "]";
-  return out;
-}
+ans[i] = S[i] - S[j] - a[i] * i + a[i] * j
+S[j] = a[i] * j - ans[i] + S[i] - a[i] * i => 截距越小，ans[i]越大
+(S[j], j) 
 
-template <typename U, typename T, class Cmp>
-ostream& operator <<(ostream& out, const unordered_map<U, T, Cmp>& a) {
-  out << "{"; bool first = true;
-  for (auto& p : a) { out << (first ? "" : ", "); out << p.first << ":" << p.second; first = 0;} out << "}";
-  return out;
-}
 
-unsigned long long seed = 131;
-unsigned long long rands() { return seed = (seed << 15) + (seed << 8 ) + (seed >> 3);}
 
-void debug() {
-    cout << "________________" << endl;
-}
-
+下凸包最小反方向
+向右移动 i -> j
+ans[i] = -(S[j] - S[i]) + a[i] * (j - i)
+ans[i] = S[i] - S[j] + a[i] * j - a[i] * i
+S[j] = a[i] * j - ans[i] - a[i] * i + S[i] => 截距越小，ans[i]越大
+(S[j], j) 
+*/
 
 const int N = 2e5 + 10;
-ll p[N];
-ll a[N];
-int n;
-ll res = 0, sum = 0;
+ll a[N], p[N];
 int q[N];
-//hull : 最小 => 下凸包   最大 => 上凸包
+int n;
+
 ll up(int i, int j) {
     return p[i] - p[j];
 }
@@ -66,83 +55,76 @@ ll down(int i, int j) {
 }
 
 void solve() {
-    scanf("%d", &n);
+    cin >> n;
+
+    ll res = 0, sum = 0;
     p[0] = 0;
     for(int i = 1; i <= n; i++) {
         scanf("%lld", &a[i]);
-        sum += ((i + 0ll) * a[i]); 
-        res = sum;
-        p[i] = p[i - 1] + a[i];
+        p[i] = a[i] + p[i - 1];
+        sum += (a[i] * i);
     }
-    
-    //move back + move front
+    res = sum;
+
+
     int hh = 0, tt = 1;
+    q[0] = 0;
+    for(int i = 1; i <= n; i++) {
+        int l = hh, r = tt - 2;
+        int pos = tt - 1;
+        while(l <= r) {
+            int mid = l + (r - l) / 2;
+            if(up(q[mid + 1], q[mid]) >= (double)a[i] * down(q[mid + 1], q[mid]) ) {
+                pos = mid;
+                r = mid - 1;
+            } else {
+                l = mid + 1;
+            }
+        }
+        int j = q[pos];
+        ll tot = sum - a[i] * i + a[i] * j + p[i] - p[j];
+        res = max(res, tot);
+        while(tt - hh > 1 && (double)up(q[tt - 1], i) * down(q[tt - 2], q[tt - 1]) <= (double)up(q[tt - 2], q[tt - 1]) * down(q[tt - 1], i)) {
+            tt--;
+        }
+        q[tt++] = i;
+    }
+
+    hh = 0; tt = 1;
     q[0] = n;
-    
-    //cout << sum << endl;
-    
-    //上凸包
     for(int i = n - 1; i >= 1; i--) {
         int l = hh, r = tt - 2;
         int pos = tt - 1;
         while(l <= r) {
             int mid = l + (r - l) / 2;
-            if(up(q[mid + 1], q[mid]) >= (double)(a[i] * down(q[mid + 1], q[mid]))) {
+            if(up(q[mid + 1], q[mid]) >= (double)a[i] * down(q[mid + 1], q[mid]) ) {
                 pos = mid;
                 r = mid - 1;
             } else {
                 l = mid + 1;
             }
         }
-        
+
         int j = q[pos];
-        ll tot = sum - p[j] + p[i] + (a[i]) * j - (a[i]) * i;
+        ll tot = sum - (p[j] - p[i]) + a[i] * (j - i);
         res = max(res, tot);
-        while(tt - hh > 1 && (double)up(q[tt-1], i) * down(q[tt-2], q[tt-1]) >= (double)up(q[tt-2], q[tt-1])* down(q[tt-1], i) ) {
+        while(tt - hh > 1 && (double)up(q[tt - 1], i) * down(q[tt - 2], q[tt-1]) >= (double)up(q[tt - 2], q[tt - 1]) * down(q[tt - 1], i)) {
             tt--;
         }
         q[tt++] = i;
-    }
-    
-
-    hh = 0; tt = 1;
-    q[0] = 0;
-
-    //下凸包
-    for(int i = 1; i <= n; i++) {
-        int l = hh, r = tt - 2;
-        int pos = tt - 1;
-        while(l <= r) {
-            int mid = l + (r - l) / 2;
-            if(up(q[mid + 1], q[mid]) >= (a[i]) * down(q[mid + 1], q[mid])) {
-                pos = mid;
-                r = mid - 1;
-            } else {
-                l = mid + 1;
-            }
-        }
         
-        int j = q[pos];
-        ll tot = sum - a[i] * i + a[i] * j + p[i] - a[i] - p[j] + a[i];
-        
-        res = max(res, tot);
-        while(tt - hh > 1 && (double)up(q[tt-1], i) * down(q[tt-2], q[tt-1]) <= (double)up(q[tt-2], q[tt-1])* down(q[tt-1], i) ) {
-            tt--;
-        }
-        q[tt++] = i;
     }
 
     cout << res << endl;
-    
-} 
-
-int main() {
-    int t = 1;
-    //cin >> t;
-    
-    while(t--) {
-        solve();
-    }
-    return 0;
 }
+    
 
+int main()
+{
+  int t = 1;
+  //cin >> t;
+  while(t--) {
+    solve();
+  }
+  return 0;
+}
