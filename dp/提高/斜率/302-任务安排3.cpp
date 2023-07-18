@@ -63,7 +63,7 @@ int main() {
       int pos = tt - 1;
       while(l <= r) {
         int mid = l + (r - l) / 2;
-        if(up(q[mid + 1], q[mid]) > (T[i] + s) * down(q[mid + 1], q[mid])) {
+        if(up(q[mid + 1], q[mid]) >= (T[i] + s) * down(q[mid + 1], q[mid])) {
           pos = mid;
           r = mid - 1;
         } else {
