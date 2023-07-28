@@ -1,3 +1,5 @@
+//start node must in all maximum matching
+
 #include <iostream>
 #include <cstring>
 #include <algorithm>
