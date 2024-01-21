@@ -53,7 +53,7 @@ void Sa() {
     for (int i = 1; i <= m; i ++ ) c[i] = 0;
     for (int i = 1; i <= n; i ++ ) c[x[i]] ++ ;
     for (int i = 2; i <= m; i ++ ) c[i] += c[i - 1];
-    for (int i = n; i; i -- ) sa[c[x[y[i]]] -- ] = y[i], y[i] = 0;
+    for (int i = n; i; i -- ) sa[c[x[y[i]]] -- ] = y[i], y[i] = 0; //按第二关键字顺序从后往前
     swap(x, y);
     
     //离散化
