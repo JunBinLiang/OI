@@ -67,6 +67,8 @@ void Sa() {
 
 //lcp(i, j) = min(lcp(i, k), lcp(k, j))
 //height[i] = lcp(i - 1, i)
+//h[i] = height(rk[i])
+//h[i] >= h[i - 1] - 1
 void Height() {
   for (int i = 1; i <= n; i ++ ) rk[sa[i]] = i;
   for (int i = 1, k = 0; i <= n; i ++ ) {
