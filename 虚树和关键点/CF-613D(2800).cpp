@@ -172,7 +172,7 @@ void solve() {
                     top --;
                 }
                 if(dfn[l] > dfn[stk[top - 1] ]) add(l, stk[top]), stk[top] = l;
-                else add(l, stk[top]), top --;
+                else if(dfn[l] == dfn[stk[top - 1] ]) add(l, stk[top]), top --;
             }
             stk[++ top] = x;
         }
@@ -203,6 +203,3 @@ int main() {
     }
     return 0;
 }
-
-
-
